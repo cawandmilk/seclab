@@ -286,7 +286,7 @@ def main(config):
         model_fn = model_mnist if ds_type == "mnist" else model_cifar
 
         ## For every attack types...
-        for attack_type in ["FGS", "PGD", "CW", "BIM", "MIM"]:
+        for attack_type in ["FGS", "PGD", "BIM", "MIM"]: ## CW
             x_adv = attack(
                 ds=ds,
                 model_fn=model_fn,

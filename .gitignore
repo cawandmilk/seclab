@@ -1,4 +1,4 @@
 *.h5
-*.npy
 venv/
 __pycache__/
+error_msg
