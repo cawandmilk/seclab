@@ -18,5 +18,5 @@
 | lr | - | - | 5e-3 | - | - |
 | decay_factor | - | - | - | - | 1 |
 
-* eps ($$\epsilon$$): 왜곡의 크기
+* eps (\epsilon): 왜곡의 크기
 * step_size: 
