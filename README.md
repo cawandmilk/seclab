@@ -7,8 +7,8 @@
 | eps | 0.3 | 0.3 | - | 0.3 | 0.3 |
 | eps_iter | - | 0.01 | - | 0.01 | 0.01 |
 | lr | - | - | 5e-3 | - | - |
-| nb_iter | - | 40 | | 40 | 40 |
-| max_iterations | - | | 1_000 | | |
+| nb_iter | - | 40 | - | 40 | 40 |
+| max_iterations | - | - | 100 | - | - |
 | norm | L_inf | L_inf | L_2 | L_inf | L_inf |
 | clip_min | 0 | 0 | 0 | 0 | 0 |
 | clip_max | 1 | 1 | 1 | 1 | 1 |
@@ -35,3 +35,23 @@
 * init_const (c): 초기 c값
 * binary_search_steps: 상수 c를 찾기 위한 binary search step
 * decay_factor: momentum의 감소 비율
+
+
+### Results (MNIST)
+
+|method|FGS|PGD|CW|BIM|MIN|
+|:---:|:---:|:---:|:---:|:---:|:---:|
+|exec_time (s)|0.64|1.29|1221.92|1.20|2.55|
+|adv_acc (%)|29.30|0.00|<span style="color:firebrick; font-weight:bold">92.35</span>|0.15|0.30|
+
+See [result.json](./result.json).
+
+
+### Results (CIFAR-10)
+
+|method|FGS|PGD|CW|BIM|MIN|
+|:---:|:---:|:---:|:---:|:---:|:---:|
+|exec_time (s)|1.28|20.47|2196.55|20.47|16.18|
+|adv_acc (%)|29.00|0.80|<span style="color:firebrick; font-weight:bold">45.05</span>|21.80|21.80|
+
+See [result.json](./result.json).

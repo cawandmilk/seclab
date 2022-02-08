@@ -1,0 +1,82 @@
+[
+    {
+        "acc": 100.0,
+        "acc_adv": 29.30000126361847,
+        "exec_time": 0.6395225524902344,
+        "ds_type": "mnist",
+        "save_to": "./modelNsamples/mnist",
+        "attack_type": "FGS"
+    },
+    {
+        "acc": 100.0,
+        "acc_adv": 0.0,
+        "exec_time": 1.2859435081481934,
+        "ds_type": "mnist",
+        "save_to": "./modelNsamples/mnist",
+        "attack_type": "PGD"
+    },
+    {
+        "acc": 100.0,
+        "acc_adv": 92.35000014305115,
+        "exec_time": 1221.9244554042816,
+        "ds_type": "mnist",
+        "save_to": "./modelNsamples/mnist",
+        "attack_type": "CW"
+    },
+    {
+        "acc": 100.0,
+        "acc_adv": 0.1500000013038516,
+        "exec_time": 1.1993703842163086,
+        "ds_type": "mnist",
+        "save_to": "./modelNsamples/mnist",
+        "attack_type": "BIM"
+    },
+    {
+        "acc": 100.0,
+        "acc_adv": 0.3000000026077032,
+        "exec_time": 2.5546653270721436,
+        "ds_type": "mnist",
+        "save_to": "./modelNsamples/mnist",
+        "attack_type": "MIM"
+    },
+    {
+        "acc": 100.0,
+        "acc_adv": 28.999999165534973,
+        "exec_time": 1.2788009643554688,
+        "ds_type": "cifar",
+        "save_to": "./modelNsamples/cifar10",
+        "attack_type": "FGS"
+    },
+    {
+        "acc": 100.0,
+        "acc_adv": 0.800000037997961,
+        "exec_time": 20.474976301193237,
+        "ds_type": "cifar",
+        "save_to": "./modelNsamples/cifar10",
+        "attack_type": "PGD"
+    },
+    {
+        "acc": 100.0,
+        "acc_adv": 45.05000114440918,
+        "exec_time": 2196.5529391765594,
+        "ds_type": "cifar",
+        "save_to": "./modelNsamples/cifar10",
+        "attack_type": "CW"
+    },
+    {
+        "acc": 100.0,
+        "acc_adv": 21.799999475479126,
+        "exec_time": 20.47440791130066,
+        "ds_type": "cifar",
+        "save_to": "./modelNsamples/cifar10",
+        "attack_type": "BIM"
+    },
+    {
+        "acc": 100.0,
+        "acc_adv": 21.799999475479126,
+        "exec_time": 16.176194429397583,
+        "ds_type": "cifar",
+        "save_to": "./modelNsamples/cifar10",
+        "attack_type": "MIM"
+    }
+]
