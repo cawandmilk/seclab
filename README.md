@@ -42,7 +42,7 @@
 |method|FGS|PGD|CW|BIM|MIN|
 |:---:|:---:|:---:|:---:|:---:|:---:|
 |exec_time (s)|0.64|1.29|1221.92|1.20|2.55|
-|adv_acc (%)|29.30|0.00|<span style="color:firebrick; font-weight:bold">92.35</span>|0.15|0.30|
+|adv_acc (%)|29.30|0.00|<span style="color:firebrick; font-weight:bold">**92.35**</span>|0.15|0.30|
 
 See [result.json](./result.json).
 
@@ -52,6 +52,6 @@ See [result.json](./result.json).
 |method|FGS|PGD|CW|BIM|MIN|
 |:---:|:---:|:---:|:---:|:---:|:---:|
 |exec_time (s)|1.28|20.47|2196.55|20.47|16.18|
-|adv_acc (%)|29.00|0.80|<span style="color:firebrick; font-weight:bold">45.05</span>|21.80|21.80|
+|adv_acc (%)|29.00|0.80|<span style="color:firebrick; font-weight:bold">**45.05**</span>|21.80|21.80|
 
 See [result.json](./result.json).
