@@ -15,7 +15,7 @@
 | rand_init | - | True | - | - | - |
 | rand_minmax | - | 0.3 | - | - | - |
 | targeted | False | False | False | False | False |
-| confidence | - | - | 0 | - | - |
+| confidence | - | - | 40 | - | - |
 | init_const | - | - | 1e-2 | - | - |
 | binary_search_steps | - | - | 5 | - | - |
 | decay_factor | - | - | - | - | 1 |
@@ -41,8 +41,8 @@
 
 |method|FGS|PGD|CW|BIM|MIN|
 |:---:|:---:|:---:|:---:|:---:|:---:|
-|exec_time (s)|0.64|1.29|1221.92|1.20|2.55|
-|adv_acc (%)|29.30|0.00|<span style="color:firebrick; font-weight:bold">**92.35**</span>|0.15|0.30|
+|exec_time (s)|0.37|1.47|6621.95|2.56|2.56|
+|adv_acc (%)|28.60|<span style="color: skyblue">**0.05**</span>|<span style="color:firebrick">**87.60**</span>|0.15|0.25|
 
 See [result.json](./result.json).
 
@@ -51,7 +51,7 @@ See [result.json](./result.json).
 
 |method|FGS|PGD|CW|BIM|MIN|
 |:---:|:---:|:---:|:---:|:---:|:---:|
-|exec_time (s)|1.28|20.47|2196.55|20.47|16.18|
-|adv_acc (%)|29.00|0.80|<span style="color:firebrick; font-weight:bold">**45.05**</span>|21.80|21.80|
+|exec_time (s)|1.28|15.60|4041.94|15.39|20.48|
+|adv_acc (%)|<span style="color:firebrick">**28.95**</span>|1.35|<span style="color:skyblue">**0.0**</span>|22.65|21.80|
 
 See [result.json](./result.json).
