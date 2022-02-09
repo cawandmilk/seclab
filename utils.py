@@ -82,13 +82,13 @@ def get_params(attack_type: str) -> dict:
             ## "model_fn": "",
             "y": None,
             "targeted": False,
-            "batch_size": 16,
+            "batch_size": 1,
             "clip_min": 0.,
             "clip_max": 1.,
             "binary_search_steps": 5,
             "max_iterations": 1_000,
             "abort_early": True,
-            "confidence": 0., ## kappa
+            "confidence": 40., ## kappa
             "initial_const": 1e-2,
             "learning_rate": 5e-3,
         },
@@ -125,7 +125,7 @@ def get_params(attack_type: str) -> dict:
     }[attack_type]
 
 
-def load_data(parent: str, suffix="data") -> Dict[str, np.ndarray]:
+def load_data(parent: str, suffix: str = "data") -> Dict[str, np.ndarray]:
     """ Load every numpy data.
     """
     segments = {"inp": [], "tar": []}
@@ -143,7 +143,11 @@ def load_data(parent: str, suffix="data") -> Dict[str, np.ndarray]:
     return segments
 
 
-def load_model(parent: str, suffix="h5") -> tf.keras.Model:
+def load_model(parent: str, suffix: str = "h5", without_softmax: bool = True) -> tf.keras.Model:
     """ Load pretrained model.
     """
-    return tf.keras.models.load_model(str(list(Path(parent).glob(f"*.{suffix}"))[0]))
+    model = tf.keras.models.load_model(str(list(Path(parent).glob(f"*.{suffix}"))[0]))
+    if without_softmax:
+        model.layers[-1].activation = None
+
+    return model
