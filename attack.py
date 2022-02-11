@@ -3,11 +3,10 @@ import tensorflow as tf
 ###
 
 import argparse
-import json
 import pprint
-import time
 
 import numpy as np
+import pandas as pd
 
 from pathlib import Path
 from tqdm import tqdm
@@ -67,18 +66,18 @@ def make_dataset(config, data: Dict[str, np.ndarray], batch_size: int = None, AU
 def attack(ds: tf.data.Dataset, model_fn: tf.keras.Model, attack_fn: Callable, params: dict, desc: str) -> np.ndarray:
     """ Do attack and evaluate it.
     """
+
     def _eval(_x: tf.Tensor, _y: tf.Tensor) -> float:
         return tf.math.reduce_mean(
             tf.keras.metrics.sparse_categorical_accuracy(
                 y_true=_y, 
-                y_pred=model_fn.predict(_x))
+                y_pred=model_fn.predict(_x),
+            )
         ).numpy()
 
-    xs = []
-    ys = []
     xs_adv = []
-
-    start = time.time()
+    ys = []
+    result = {}
 
     for element in tqdm(ds, desc=desc):
         ## Unpack.
@@ -92,32 +91,25 @@ def attack(ds: tf.data.Dataset, model_fn: tf.keras.Model, attack_fn: Callable, p
         )
         
         ## Gather.
-        xs.append(x)
-        ys.append(y)
         xs_adv.append(x_adv)
-
-    end = time.time()
+        ys.append(y)
 
     ## Concat.
-    xs = tf.concat(xs, axis=0)
-    ys = tf.concat(ys, axis=0)
     xs_adv = tf.concat(xs_adv, axis=0)
+    ys = tf.concat(ys, axis=0)
 
     ## Box constraint for valid images.
     # xs_adv = tf.cast(xs_adv * 255, tf.uint8)
     # xs_adv = tf.cast(xs_adv, tf.float32) / 255.
 
     ## Calculate metrics.
-    acc = _eval(xs, ys)
     acc_adv = _eval(xs_adv, ys)
 
     ## Results.
     return (
         tf.cast(xs_adv * 255, tf.uint8).numpy(), 
         {
-            "acc": acc * 100,
             "acc_adv": acc_adv * 100,
-            "exec_time": end - start,
         }
     )
 
@@ -127,8 +119,8 @@ def main(config):
     """
     def print_config(config):
         ## 'sort_dicts=False' params can only apply python>=3.8.
-        pprint.PrettyPrinter(indent=4, sort_dicts=False).pprint(config)
-    print_config(vars(config))
+        pprint.PrettyPrinter(indent=4).pprint(config)
+    print_config(config)
 
     ## Set gpu memory growthable.
     set_gpu_growthable()
@@ -154,44 +146,82 @@ def main(config):
     model_mnist = load_model(config.mnist) ## LeNet5
     model_cifar = load_model(config.cifar) ## VGG19
 
-    ## Do attack.
+    ## Total results.
     results = []
+
+    ## Do l_inf attacks: FGS, PGD, BIM, MIN.
     for ds_type in ["mnist", "cifar"]:
         ## We only use LeNet5 when dataset is mnist, else VGG19. (not grid search)
         model_fn = model_mnist if ds_type == "mnist" else model_cifar
 
         ## For every attack types...
-        for attack_type in ["FGS", "PGD", "CW", "BIM", "MIM"]: ## CW
-            ## CW attack allow only batch_size=1.
-            if attack_type == "CW":
-                ds = mnist_ds_cw if ds_type == "mnist" else cifar_ds_cw
-            else:
-                ds = mnist_ds if ds_type == "mnist" else cifar_ds
+        for attack_type in ["FGS", "PGD", "BIM", "MIM"]: ## CW
+            ## Get ds.
+            ds = mnist_ds if ds_type == "mnist" else cifar_ds
+
+            ## For every epsilons...
+            for eps in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6]:
+                ## Update epsilon.
+                params = get_params(attack_type)
+                params.update({"eps": eps})
+
+                x_adv, result = attack(
+                    ds=ds,
+                    model_fn=model_fn,
+                    attack_fn=get_attack_fn(attack_type),
+                    params=params,
+                    desc=f"{ds_type.upper()}-{attack_type:<3}-{params.get('eps')}",
+                )
+
+                result["ds_type"] = ds_type
+                result["attack_type"] = attack_type
+                result["eps"] = eps
+
+                ## Save it.
+                save_to = config.mnist if ds_type == "mnist" else config.cifar
+                np.save(Path(save_to, f"{result['attack_type'].upper()}_{eps}_1000"), x_adv[:1000])
+                np.save(Path(save_to, f"{result['attack_type'].upper()}_{eps}_next_1000"), x_adv[1000:])
+
+                ## Append it.
+                results.append(result)
+
+    ## Do l_2 attack: CW.
+    for ds_type in ["mnist", "cifar"]:
+        continue
+        ## We only use LeNet5 when dataset is mnist, else VGG19. (not grid search)
+        model_fn = model_mnist if ds_type == "mnist" else model_cifar
+
+        ## For every attack types...
+        for attack_type in ["CW"]:
+            ## Get ds.
+            ds = mnist_ds_cw if ds_type == "mnist" else cifar_ds_cw
+
+            params = get_params(attack_type)
+            # params.update({"eps": eps})
 
             x_adv, result = attack(
                 ds=ds,
                 model_fn=model_fn,
                 attack_fn=get_attack_fn(attack_type),
-                params=get_params(attack_type),
-                desc=f"{ds_type.upper()}-{attack_type:<3}",
+                params=params,
+                desc=f"{ds_type.upper()}-{attack_type:<7}",
             )
 
             result["ds_type"] = ds_type
-            result["save_to"] = config.mnist if ds_type == "mnist" else config.cifar
             result["attack_type"] = attack_type
+            # result["eps"] = eps
 
             ## Save it.
-            np.save(Path(result["save_to"], f"{result['attack_type'].upper()}_1000"), x_adv[:1000])
-            np.save(Path(result["save_to"], f"{result['attack_type'].upper()}_next_1000"), x_adv[1000:])
+            save_to = config.mnist if ds_type == "mnist" else config.cifar
+            np.save(Path(save_to, f"{result['attack_type'].upper()}_1000"), x_adv[:1000])
+            np.save(Path(save_to, f"{result['attack_type'].upper()}_next_1000"), x_adv[1000:])
 
             ## Append it.
             results.append(result)
 
     ## Print and save results.
     print_config(results)
-
-    with open("result.json", "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=4)
+    pd.DataFrame(results).to_csv("./result.csv", encoding="utf-8", index=False)
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@
 
 | method | FGS | PGD | CW | BIM | MIM |
 |---|:---:|:---:|:---:|:---:|:---:|
-| eps | 0.3 | 0.3 | - | 0.3 | 0.3 |
+| eps |-|-|-|-|-|
 | eps_iter | - | 0.01 | - | 0.01 | 0.01 |
 | lr | - | - | 5e-3 | - | - |
 | nb_iter | - | 40 | - | 40 | 40 |
@@ -20,7 +20,7 @@
 | binary_search_steps | - | - | 5 | - | - |
 | decay_factor | - | - | - | - | 1 |
 
-* eps (epsilon): 왜곡의 크기
+* eps (epsilon): 왜곡의 크기 (variable)
 * eps_iter (a): 각 attack iteration에 대한 step size
 * lr: 적대적 예제 생성을 위한 learning rate (CW 한정)
 * nb_iter: Attack iteration 반복 횟수
@@ -36,22 +36,33 @@
 * binary_search_steps: 상수 c를 찾기 위한 binary search step
 * decay_factor: momentum의 감소 비율
 
+### Accuracies for Adversarial Examples (%): MNIST 
 
-### Results (MNIST)
-
-|method|FGS|PGD|CW|BIM|MIN|
+|epsilon|FGS|PGD|CW|BIM|MIM|
 |:---:|:---:|:---:|:---:|:---:|:---:|
-|exec_time (s)|0.37|1.47|6621.95|2.56|2.56|
-|adv_acc (%)|28.60|<span style="color: skyblue">**0.05**</span>|<span style="color:firebrick">**87.60**</span>|0.15|0.25|
+|-|-|-|87.60|-|-|
+|0.1|75.30|31.70|-|31.60|35.20|
+|0.2|45.55|0.55|-|0.50|1.25|
+|0.3|28.00|0.10|-|0.15|0.25|
+|0.4|17.15|0.10|-|0.15|0.25|
+|0.5|12.30|0.00|-|0.15|0.25|
+|0.6|11.15|0.10|-|0.15|0.25|
 
-See [result.json](./result.json).
+### Accuracies for Adversarial Examples (%): CIFAR-10 
 
-
-### Results (CIFAR-10)
-
-|method|FGS|PGD|CW|BIM|MIN|
+|epsilon|FGS|PGD|CW|BIM|MIM|
 |:---:|:---:|:---:|:---:|:---:|:---:|
-|exec_time (s)|1.28|15.60|4041.94|15.39|20.48|
-|adv_acc (%)|<span style="color:firebrick">**28.95**</span>|1.35|<span style="color:skyblue">**0.0**</span>|22.65|21.80|
+|-|-|-|0.0|-|-|
+|0.1|29.95|4.45|-|24.30|23.80|
+|0.2|30.80|1.70|-|24.30|23.80|
+|0.3|30.55|1.80|-|24.25|23.80|
+|0.4|30.50|1.10|-|24.25|23.80|
+|0.5|30.55|1.45|-|24.25|23.80|
+|0.6|30.85|1.35|-|24.25|23.80|
 
-See [result.json](./result.json).
+See [result.csv](./result.csv)
+
+### Adversarial Examples (Google Drive)
+
+* For MNIST: [here](https://drive.google.com/file/d/1Go1IeKV80YSFuFO4I1JK9cOR06icLH18/view?usp=sharing)
+* For CIFAR-10: [here](https://drive.google.com/file/d/1HDxzaiEUfcwup7qkq2AeenLHiwKTMLbJ/view?usp=sharing)
