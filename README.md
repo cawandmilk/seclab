@@ -64,8 +64,8 @@ See [result.csv](./result.csv)
 
 ### Adversarial Examples (Google Drive)
 
-* For MNIST: [here](https://drive.google.com/file/d/1Go1IeKV80YSFuFO4I1JK9cOR06icLH18/view?usp=sharing)
-* For CIFAR-10: [here](https://drive.google.com/file/d/1HDxzaiEUfcwup7qkq2AeenLHiwKTMLbJ/view?usp=sharing)
+* For MNIST: [here](https://drive.google.com/file/d/1DpYiqUFWLkAj2yhnVIrTRsfB_NWL7fwG/view?usp=sharing)
+* For CIFAR-10: [here](https://drive.google.com/file/d/1UC99RbNI6XL0mhVFgWIe7Di3J_iN7i4V/view?usp=sharing)
 * File name formatting
   - (NOT CW) `{attack_type}_{epsilon}_1000.npy` or `{attack_type}_{epsilon}_next_1000.npy`
   - (CW) `{attack_type}_1000.npy` or `{attack_type}_next_1000.npy`
